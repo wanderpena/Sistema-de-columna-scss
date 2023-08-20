@@ -1,0 +1,69 @@
+// Lightweight grid system, built with css grid.
+// https://codepen.io/wander031180/pen/XWYqmRM
+
+$breakpoints: (
+  xs: 0,
+  sm: 640px,
+  md: 1024px,
+  lg: 1200px,
+  xl: 1440px
+);
+
+$gap: (
+  xs: 0,
+  sm: 8px,
+  md: 16px,
+  lg: 24px,
+  xl: 28px
+) !default;
+
+.wrapper {
+  width: min(100% - 2rem, 1280px);
+  margin-inline: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto;
+  grid-gap: map-get($gap, "xs");
+
+  @each $name, $value in $gap {
+    &.gap-#{$name} {
+      grid-gap: $value;
+    }
+  }
+
+  > * {
+    grid-column-start: span 12;
+  }
+
+  @each $bp-name, $bp-value in $breakpoints {
+    @media (min-width: #{$bp-value}) {
+      @for $i from 1 through 12 {
+        .col-#{$bp-name}-#{$i} {
+          grid-column: span #{$i} / span #{$i};
+        }
+        .row-#{$bp-name}-#{$i} {
+          grid-row: span #{$i} / span #{$i};
+        }
+      }
+    }
+  }
+}
+
+/* demo */
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+.demo {
+  background-color: crimson;
+  border: 1px solid pink;
+  font-family: monospace;
+  font-size: small;
+  text-align: center;
+  color: white;
+  padding: 1rem;
+}
